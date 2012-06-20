@@ -62,24 +62,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *  Original matrix here: http://geekhack.org/showthread.php?7767-Wireless-Model-M&p=133911&viewfull=1#post133911
  */
 #define KEYMAP( \
-    K22, K23, K33, K43, K53, K52, K72, K73, K83, K93, KA3, KA2, K82, K64, K61, \
-    K21, K24, K34, K44, K54, K51, K71, K74, K84, K94, KA4, KA1, K81, K65, \
-    K31, K25, K35, K45, K55, K50, K70, K75, K85, K95, KA5, KA0, K66, \
-    K11, K26, K36, K46, K56, K57, K77, K76, K86, K96, KA7, K16, \
-    K02, KB0,      K67,      KB7, K06 \
-) { \
-    { KB_NO,    KB_NO,    KB_##K02, KB_NO,    KB_NO,    KB_NO,    KB_##K06, KB_NO    }, \
-    { KB_NO,    KB_##K11, KB_NO,    KB_NO,    KB_NO,    KB_NO,    KB_##K16, KB_NO    }, \
-    { KB_NO,    KB_##K21, KB_##K22, KB_##K23, KB_##K24, KB_##K25, KB_##K26, KB_NO    }, \
-    { KB_NO,    KB_##K31, KB_NO,    KB_##K33, KB_##K34, KB_##K35, KB_##K36, KB_NO    }, \
-    { KB_NO,    KB_NO,    KB_NO,    KB_##K43, KB_##K44, KB_##K45, KB_##K46, KB_NO    }, \
-    { KB_##K50, KB_##K51, KB_##K52, KB_##K53, KB_##K54, KB_##K55, KB_##K56, KB_##K57 }, \
-    { KB_NO,    KB_##K61, KB_NO,    KB_NO,    KB_##K64, KB_##K65, KB_##K66, KB_##K67 }, \
-    { KB_##K70, KB_##K71, KB_##K72, KB_##K73, KB_##K74, KB_##K75, KB_##K76, KB_##K77 }, \
-    { KB_NO,    KB_##K81, KB_##K82, KB_##K83, KB_##K84, KB_##K85, KB_##K86, KB_NO    }, \
-    { KB_NO,    KB_NO,    KB_NO,    KB_##K93, KB_##K94, KB_##K95, KB_##K96, KB_NO    }, \
-    { KB_##KA0, KB_##KA1, KB_##KA2, KB_##KA3, KB_##KA4, KB_##KA5, KB_NO,    KB_##KA7 }, \
-    { KB_##KB0, KB_NO,    KB_NO,    KB_NO,    KB_NO,    KB_NO,    KB_NO,    KB_##KB7 }, \
+    K00, K10, K20, K30, K40, K50, \
+    K01, K11, K21, K31, K41, K51, \
+    K02, K12, K22, K32, K42, K52, \
+    K03, K13, K23, K33, K43, K53, \
+    K04, K14, K24, K34, K44, K54 ) { \
+    { KB_##K00, KB_##K10, KB_##K20, KB_##K30, KB_##K40, KB_##K50, }, \
+    { KB_##K01, KB_##K11, KB_##K21, KB_##K31, KB_##K41, KB_##K51, }, \
+    { KB_##K02, KB_##K12, KB_##K22, KB_##K32, KB_##K42, KB_##K52, }, \
+    { KB_##K03, KB_##K13, KB_##K23, KB_##K33, KB_##K43, KB_##K53, }, \
+    { KB_##K04, KB_##K14, KB_##K24, KB_##K34, KB_##K44, KB_##K54, }, \
 }
 
 #define KEYCODE(layer, row, col) (pgm_read_byte(&keymaps[(layer)][(row)][(col)]))
@@ -88,10 +80,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Assign Fn key(0-7) to a layer to which switch with the Fn key pressed.
 static const uint8_t PROGMEM fn_layer[] = {
     0,              // Fn0
-    1,              // Fn1
-    2,              // Fn2
-    3,              // Fn3
-    4,              // Fn4
+    0,              // Fn1
+    0,              // Fn2
+    0,              // Fn3
+    0,              // Fn4
     0,              // Fn5
     0,              // Fn6
     0               // Fn7
@@ -124,11 +116,11 @@ static const uint8_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |Ctrl |   |Alt  |           Fn4             |Alt  |   |Fn1  |
      * `-----'   `---------------------------------------'   `-----'
      */
-    KEYMAP(A, B,   2,   3,   4,   5,   6,   7,   8,   9,   0,   MINS,EQL, BSLS,GRV, \
-           TAB, Q,   W,   E,   R,   T,   Y,   U,   I,   O,   P,   LBRC,RBRC,BSPC, \
-           LCTL,A,   S,   D,   F,   G,   H,   J,   K,   L,   FN3, QUOT,ENT, \
-           LSFT,Z,   X,   C,   V,   B,   N,   M,   COMM,DOT, FN2, FN1, \
-           LGUI,     LALT,          FN4,           RALT,     FN1),
+    KEYMAP(0, 1, 2, 3, 4, 5, \
+           0, 1, 2, 3, 4, 5, \
+           0, 1, 2, 3, 4, 5, \
+           0, 1, 2, 3, 4, 5, \
+           0, 1, 2, 3, 4, 5  ),
 };
 
 
