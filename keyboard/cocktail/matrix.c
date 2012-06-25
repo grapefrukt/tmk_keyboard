@@ -99,6 +99,9 @@ void matrix_init(void)
     DDRB = 0x00;
     PORTB = 0xff;
 
+    DDRF = 0x00;
+    PORTF = 0xff;
+
     // initialize matrix state: all keys off
     for (uint8_t i=0; i < MATRIX_ROWS; i++) _matrix0[i] = 0x00;
     for (uint8_t i=0; i < MATRIX_ROWS; i++) _matrix1[i] = 0x00;
@@ -118,11 +121,17 @@ uint8_t matrix_scan(void)
     //matrix[0] = PINB;
 
     //if(!(PINB & (1<<0))) debug("hello");
-    for (uint8_t i = 0; i < 3; i++){
-        if (PINB & (1<<i) ){
+    for (uint8_t i = 0; i < matrix_cols(); i++){
+        if (PIND & (1<<i) ){
             matrix[0] &= ~(1 << i);   
         } else {
             matrix[0] |= 1 << i;
+        }
+
+        if (PINF & (1<<i) ){
+            matrix[1] &= ~(1 << i);   
+        } else {
+            matrix[1] |= 1 << i;
         }
     }
 

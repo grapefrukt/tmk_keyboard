@@ -116,8 +116,8 @@ static const uint8_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |Ctrl |   |Alt  |           Fn4             |Alt  |   |Fn1  |
      * `-----'   `---------------------------------------'   `-----'
      */
-    KEYMAP(0, 1, 2, 3, 4, 5, \
-           0, 1, 2, 3, 4, 5, \
+    KEYMAP(LCTRL, LALT, UP, RIGHT, DOWN, LEFT, \
+           A, S, R, G, F, D, \
            0, 1, 2, 3, 4, 5, \
            0, 1, 2, 3, 4, 5, \
            0, 1, 2, 3, 4, 5  ),
