@@ -9,3 +9,4 @@
 *.sym
 tags
 .DS_Store
+*.sublime*
