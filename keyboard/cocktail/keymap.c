@@ -64,7 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define KEYMAP( \
     K00, K10, K20, K30, K40, K50, \
     K01, K11, K21, K31, K41, K51, \
-    K02, K12, K22, K32, K42, K52, \
+    K12, K02, K22, K32, K42, K52, \
     K03, K13, K23, K33, K43, K53, \
     K04, K14, K24, K34, K44, K54 ) { \
     { KB_##K00, KB_##K10, KB_##K20, KB_##K30, KB_##K40, KB_##K50, }, \
@@ -116,11 +116,33 @@ static const uint8_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |Ctrl |   |Alt  |           Fn4             |Alt  |   |Fn1  |
      * `-----'   `---------------------------------------'   `-----'
      */
-    KEYMAP(LCTRL, LALT, UP, RIGHT, DOWN, LEFT, \
+    // MAME
+    /*KEYMAP(LCTRL, LALT, UP, RIGHT, DOWN, LEFT, \
            A, S, R, G, F, D, \
-           0, 1, 2, 3, 4, 5, \
-           0, 1, 2, 3, 4, 5, \
+           RCTRL, RSHIFT, I, J, K, L, \
+           KP_0, KP_5, KP_8, KP_6, KP_2, KP_4, \
            0, 1, 2, 3, 4, 5  ),
+    */
+    // mrs dad, unflipped
+    /*KEYMAP(LCTRL, LALT, UP, RIGHT, DOWN, LEFT, \
+           Q, E, W, D, S, A, \
+           R, Y, T, H, G, F, \
+           U, O, I, L, K, J, \
+           0, 1, 2, 3, 4, 5  ),
+    */
+    // mrs dad inverted
+    KEYMAP(SPACE, LSHIFT, UP, RIGHT, DOWN, LEFT, \
+           Q, E, W, D, S, A, \
+           R, Y, G, F, T, H, \
+           U, O, K, J, I, L, \
+           1, 2, 0, 0, 0, 0  ),
+
+   /* KEYMAP(M, N, UP, RIGHT, DOWN, LEFT, \
+           F, G, W, D, S, A, \
+           R, Y, G, F, T, H, \
+           U, O, K, J, I, L, \
+           0, 1, 2, 3, 4, 5  ),
+*/
 };
 
 

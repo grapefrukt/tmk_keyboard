@@ -46,6 +46,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 static uint8_t debouncing = DEBOUNCE;
 
+#define READ_DELAY 50
+
 // matrix state buffer(1:on, 0:off)
 #if (MATRIX_COLS <= 8)
 static uint8_t *matrix;
@@ -63,6 +65,7 @@ static uint8_t read_col(void);
 static void unselect_rows(void);
 static void select_row(uint8_t row);
 
+static char flip;
 
 inline
 uint8_t matrix_rows(void)
@@ -78,9 +81,9 @@ uint8_t matrix_cols(void)
 
 void matrix_init(void)
 {
-    print_enable = true;
-    debug_enable = true;
-    debug_matrix = true;
+    print_enable = false;
+    debug_enable = false;
+    debug_matrix = false;
     debug_keyboard = false;
     debug_mouse = false;
     print("debug enabled.\n");
@@ -93,14 +96,16 @@ void matrix_init(void)
     unselect_rows();
 
     // initialize columns to input with pull-up(DDR:0, PORT:1)
-    DDRD = 0x00;
-    PORTD = 0xFF;
-
-    DDRB = 0x00;
+    DDRB  = 0x00;
     PORTB = 0xff;
-
-    DDRF = 0x00;
+    DDRC  = 0x00;
+    PORTC = 0xff;
+    DDRD  = 0x00;
+    PORTD = 0xFF;
+    DDRF  = 0x00;
     PORTF = 0xff;
+
+    flip = false;
 
     // initialize matrix state: all keys off
     for (uint8_t i=0; i < MATRIX_ROWS; i++) _matrix0[i] = 0x00;
@@ -117,39 +122,49 @@ uint8_t matrix_scan(void)
         matrix = tmp;
     }
 
-    //matrix[0] |= (   true  << 0);
-    //matrix[0] = PINB;
-
-    //if(!(PINB & (1<<0))) debug("hello");
     for (uint8_t i = 0; i < matrix_cols(); i++){
-        if (PIND & (1<<i) ){
+        if (PINB & (1<<i) ){
             matrix[0] &= ~(1 << i);   
-        } else {
+        } else { 
             matrix[0] |= 1 << i;
         }
-
-        if (PINF & (1<<i) ){
+         _delay_us(READ_DELAY); 
+        if (PINC & (1<<i) ){
             matrix[1] &= ~(1 << i);   
         } else {
             matrix[1] |= 1 << i;
         }
-    }
-
-
-    /*for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
-        unselect_rows();
-        select_row(i);
-        _delay_us(30);  // without this wait read unstable value.
-        if (matrix[i] != (uint8_t)~read_col()) {
-            matrix[i] = (uint8_t)~read_col();
-            if (debouncing) {
-            ay_ms(1);   // TODO: work around. HAHAHAHAHAAHA    
-            }
-            debug("bounce!: "); debug_hex(debouncing); print("\n");_del
-            debouncing = DEBOUNCE;
+        _delay_us(READ_DELAY); 
+        if (PIND & (1<<i) ){
+            matrix[2] &= ~(1 << i);   
+        } else {
+            matrix[2] |= 1 << i;
         }
+        _delay_us(READ_DELAY); 
+        if (PINF & (1<<i) ){
+            matrix[3] &= ~(1 << i);
+        } else {
+            matrix[3] |= 1 << i;
+        }
+         _delay_us(READ_DELAY);
     }
-    unselect_rows();*/
+    
+    if (PINF & (1<<6) ){
+        matrix[4] &= ~(1 << 0);
+    } else {
+        matrix[4] |= 1 << 0;
+    }
+
+    if (PINF & (1<<7) ){
+        matrix[4] &= ~(1 << 1);
+    } else {
+        matrix[4] |= 1 << 1;
+    }
+
+    /*if(flip == true){
+
+        matrix[2]
+    }*/
 
     if (debouncing) {
         debouncing--;
@@ -221,44 +236,17 @@ uint8_t matrix_key_count(void)
 inline
 static uint8_t read_col(void)
 {
-    return PIND;
+    // do nothing
 }
 
 inline
 static void unselect_rows(void)
 {
-    // Hi-Z(DDR:0, PORT:0) to unselect
-    DDRB  &= ~0b11111111;
-    PORTB &= ~0b11111111;
-    DDRF  &= ~0b11110000;
-    PORTF &= ~0b11110000;
+    // do nothing
 }
 
 inline
 static void select_row(uint8_t row)
 {
-    // Output low(DDR:1, PORT:0) to select
-    switch (row) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-            DDRB  |=  (1<<row);
-            PORTB &= ~(1<<row);
-            break;
-        case 8:
-            DDRF  |=  (1<<4);
-            PORTF &= ~(1<<4);
-            break;
-        case 9:
-        case 10:
-        case 11:
-            DDRF  |=  (1<<(row-4));
-            PORTF &= ~(1<<(row-4));
-            break;
-    }
+    // do nothing
 }
