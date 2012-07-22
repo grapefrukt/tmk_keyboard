@@ -48,6 +48,7 @@ void vusb_transfer_keyboard(void)
                 print(" mods: "); phex((kbuf[kbuf_tail]).mods); print("\n");
             }
             kbuf_tail = (kbuf_tail + 1) % KBUF_SIZE;
+            print("buf"); phex(kbuf_head), phex(kbuf_tail);print("\n")
         }
     }
 }
@@ -81,12 +82,14 @@ static uint8_t keyboard_leds(void) {
 
 static void send_keyboard(report_keyboard_t *report)
 {
+    return;
     uint8_t next = (kbuf_head + 1) % KBUF_SIZE;
     if (next != kbuf_tail) {
         kbuf[kbuf_head] = *report;
         kbuf_head = next;
+        print("key\n")
     } else {
-        debug("kbuf: full\n");
+        print("kbuf: full\n");
     }
 }
 

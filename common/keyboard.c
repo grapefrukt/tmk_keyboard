@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "timer.h"
 #include "print.h"
 #include "debug.h"
+#include "util.h"
 #include "command.h"
 #ifdef MOUSEKEY_ENABLE
 #include "mousekey.h"
@@ -30,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef EXTRAKEY_ENABLE
 #include <util/delay.h>
 #endif
-
+#include <util/delay.h>
 
 static uint8_t last_leds = 0;
 
@@ -43,6 +44,9 @@ void keyboard_init(void)
     ps2_mouse_init();
 #endif
 }
+
+
+volatile unsigned char report_sent;
 
 void keyboard_proc(void)
 {
@@ -179,6 +183,11 @@ void keyboard_proc(void)
         DEBUG_LED_CONFIG;
         DEBUG_LED_OFF;
 #endif
+            while(!report_sent) print("+");
+    report_sent = 0;
+    print(".");
+    _delay_ms(100);
+
     }
 
 #ifdef MOUSEKEY_ENABLE

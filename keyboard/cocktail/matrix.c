@@ -81,7 +81,7 @@ uint8_t matrix_cols(void)
 
 void matrix_init(void)
 {
-    print_enable = false;
+    print_enable = true;
     debug_enable = false;
     debug_matrix = false;
     debug_keyboard = false;
@@ -114,15 +114,23 @@ void matrix_init(void)
     matrix_prev = _matrix1;
 }
 
+
 uint8_t matrix_scan(void)
 {
+    _delay_us(1);
     if (!debouncing) {
         uint8_t *tmp = matrix_prev;
         matrix_prev = matrix;
         matrix = tmp;
     }
-
-    for (uint8_t i = 0; i < matrix_cols(); i++){
+    matrix[0] = ~(PINB | 0xc0);
+    matrix[1] = ~(PINC | 0xc0);
+    matrix[2] = ~(PIND | 0xc0);
+    matrix[3] = ~(PINF);
+    matrix[4] = (matrix[3] >> 6) & 0x03;
+    matrix[3] &= 0x3f;
+    return 1;
+    /*for (uint8_t i = 0; i < matrix_cols(); i++){
         if (PINB & (1<<i) ){
             matrix[0] &= ~(1 << i);   
         } else { 
@@ -160,7 +168,7 @@ uint8_t matrix_scan(void)
     } else {
         matrix[4] |= 1 << 1;
     }
-
+*/
     /*if(flip == true){
 
         matrix[2]
@@ -236,7 +244,7 @@ uint8_t matrix_key_count(void)
 inline
 static uint8_t read_col(void)
 {
-    // do nothing
+    return 0;// do nothing
 }
 
 inline

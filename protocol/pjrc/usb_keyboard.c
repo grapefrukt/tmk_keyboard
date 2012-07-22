@@ -25,6 +25,7 @@
 #include <avr/pgmspace.h>
 #include "usb_keycodes.h"
 #include "usb_keyboard.h"
+#include <util/delay.h>
 #include "print.h"
 #include "debug.h"
 #include "util.h"
@@ -81,7 +82,7 @@ void usb_keyboard_print_report(report_keyboard_t *report)
     print(" mods: "); phex(report->mods); print("\n");
 }
 
-
+extern volatile unsigned char report_sent;
 static inline int8_t send_report(report_keyboard_t *report, uint8_t endpoint, uint8_t keys_start, uint8_t keys_end)
 {
     uint8_t intr_state, timeout;
@@ -116,5 +117,6 @@ static inline int8_t send_report(report_keyboard_t *report, uint8_t endpoint, ui
     }
     UEINTX = 0x3A;
     SREG = intr_state;
+    report_sent = 1;
     return 0;
 }
