@@ -53,6 +53,11 @@ int main(void)
     DEBUG_LED_CONFIG;
     DEBUG_LED_OFF;
 
+#ifdef NKRO_ENABLE
+    keyboard_nkro = true;
+#endif
+
+
     // set for 16 MHz clock
     CPU_PRESCALE(0);
 
